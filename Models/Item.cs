@@ -11,7 +11,7 @@ namespace ProjetoDeSia.Models
         [Key]
         public int IdItem { get; set; }
 
-        [Required]
+        [Required]//a descrição é o nome do quadrante
         public string Descricao { get; set; }
 
         //não é required pois a pontuação é gerada automaticamente
@@ -22,8 +22,12 @@ namespace ProjetoDeSia.Models
         [Required]
         public string classificacao { get; set; }//0,1,2,3,4 ou 5
 
+
         public Tecnica Tecnica { get; set; }
 
         public int TecnicaId { get; set; }
+
+        //tem um quadrante id
+        public int PosicaoId { get; set; }
     }
 }

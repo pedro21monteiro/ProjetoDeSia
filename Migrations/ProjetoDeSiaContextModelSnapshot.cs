@@ -35,6 +35,9 @@ namespace ProjetoDeSia.Migrations
                     b.Property<double>("Pontucao")
                         .HasColumnType("float");
 
+                    b.Property<int>("PosicaoId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TecnicaId")
                         .HasColumnType("int");
 
@@ -47,30 +50,6 @@ namespace ProjetoDeSia.Migrations
                     b.HasIndex("TecnicaId");
 
                     b.ToTable("Item");
-                });
-
-            modelBuilder.Entity("ProjetoDeSia.Models.Quadrante", b =>
-                {
-                    b.Property<int>("IdQuadrante")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Nome_Quad")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PosicaoQuadrante")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TecnicaId")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdQuadrante");
-
-                    b.HasIndex("TecnicaId");
-
-                    b.ToTable("Quadrante");
                 });
 
             modelBuilder.Entity("ProjetoDeSia.Models.Tecnica", b =>
@@ -90,6 +69,18 @@ namespace ProjetoDeSia.Migrations
 
                     b.Property<int>("UtilizadorId")
                         .HasColumnType("int");
+
+                    b.Property<string>("nomeQuadrante1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("nomeQuadrante2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("nomeQuadrante3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("nomeQuadrante4")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdTecnica");
 
@@ -136,17 +127,6 @@ namespace ProjetoDeSia.Migrations
                     b.Navigation("Tecnica");
                 });
 
-            modelBuilder.Entity("ProjetoDeSia.Models.Quadrante", b =>
-                {
-                    b.HasOne("ProjetoDeSia.Models.Tecnica", "Tecnica")
-                        .WithMany("Quadrante")
-                        .HasForeignKey("TecnicaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tecnica");
-                });
-
             modelBuilder.Entity("ProjetoDeSia.Models.Tecnica", b =>
                 {
                     b.HasOne("ProjetoDeSia.Models.Utilizador", "Utilizador")
@@ -161,8 +141,6 @@ namespace ProjetoDeSia.Migrations
             modelBuilder.Entity("ProjetoDeSia.Models.Tecnica", b =>
                 {
                     b.Navigation("Item");
-
-                    b.Navigation("Quadrante");
                 });
 
             modelBuilder.Entity("ProjetoDeSia.Models.Utilizador", b =>

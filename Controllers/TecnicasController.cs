@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -48,7 +49,7 @@ namespace ProjetoDeSia.Controllers
         // GET: Tecnicas/Create
         public IActionResult Create()
         {
-            ViewData["UtilizadorId"] = new SelectList(_context.Utilizador, "IdUtilizador", "Email");
+            ViewData["UtilizadorId"] = new SelectList(_context.Utilizador, "IdUtilizador");
             return View();
         }
 
@@ -57,10 +58,11 @@ namespace ProjetoDeSia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdTecnica,Nome,Descricao,UtilizadorId")] Tecnica tecnica)
+        public async Task<IActionResult> Create([Bind("IdTecnica,Nome,Descricao")] Tecnica tecnica)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && HttpContext.Session.GetString("UtilizadorId") != null)
             {
+                tecnica.UtilizadorId = Convert.ToInt32(HttpContext.Session.GetString("UtilizadorId"));
                 _context.Add(tecnica);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -91,7 +93,7 @@ namespace ProjetoDeSia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdTecnica,Nome,Descricao,UtilizadorId")] Tecnica tecnica)
+        public async Task<IActionResult> Edit(int id, [Bind("IdTecnica,Nome,Descricao,nomeQuadrante1,nomeQuadrante2,nomeQuadrante3,nomeQuadrante4,UtilizadorId")] Tecnica tecnica)
         {
             if (id != tecnica.IdTecnica)
             {

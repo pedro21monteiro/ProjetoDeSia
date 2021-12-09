@@ -16,7 +16,8 @@ namespace ProjetoDeSia.Migrations
                     Pontucao = table.Column<double>(type: "float", nullable: false),
                     Importancia = table.Column<int>(type: "int", nullable: false),
                     classificacao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TecnicaId = table.Column<int>(type: "int", nullable: false)
+                    TecnicaId = table.Column<int>(type: "int", nullable: false),
+                    PosicaoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

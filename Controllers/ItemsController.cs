@@ -57,7 +57,7 @@ namespace ProjetoDeSia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdItem,Descricao,Pontucao,Importancia,classificacao,TecnicaId")] Item item)
+        public async Task<IActionResult> Create([Bind("IdItem,Descricao,Pontucao,Importancia,classificacao,TecnicaId,PosicaoId")] Item item)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace ProjetoDeSia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdItem,Descricao,Pontucao,Importancia,classificacao,TecnicaId")] Item item)
+        public async Task<IActionResult> Edit(int id, [Bind("IdItem,Descricao,Pontucao,Importancia,classificacao,TecnicaId,PosicaoId")] Item item)
         {
             if (id != item.IdItem)
             {

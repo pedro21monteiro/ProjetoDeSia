@@ -18,11 +18,17 @@ namespace ProjetoDeSia.Models
         [Required]
         public string Descricao { get; set; }
 
+        //quadrantes, que são 4
+
+        public string nomeQuadrante1 { get; set; }
+        public string nomeQuadrante2 { get; set; }
+        public string nomeQuadrante3 { get; set; }
+        public string nomeQuadrante4 { get; set; }
+
         public Utilizador Utilizador { get; set; }
 
         public int UtilizadorId { get; set; }
 
-        public ICollection<Quadrante> Quadrante { get; set; }
 
         public ICollection<Item> Item { get; set; }
 
