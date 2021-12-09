@@ -20,6 +20,9 @@ namespace ProjetoDeSia.Data
 
         public DbSet<ProjetoDeSia.Models.Item> Item { get; set; }
 
+        public DbSet<ProjetoDeSia.Models.Quadrante> Quadrante { get; set; }
+
+       
 
 
  

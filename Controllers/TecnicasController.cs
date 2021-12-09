@@ -45,7 +45,6 @@ namespace ProjetoDeSia.Controllers
 
             return View(tecnica);
         }
-
         // GET: Tecnicas/Create
         public IActionResult Create()
         {
@@ -64,6 +63,45 @@ namespace ProjetoDeSia.Controllers
             {
                 tecnica.UtilizadorId = Convert.ToInt32(HttpContext.Session.GetString("UtilizadorId"));
                 _context.Add(tecnica);
+
+                //quando se cria uma tecnica vai-se criar os 4 quadrantes, pois uma tecnica tem sempre 4 quadrantes
+                Quadrante quadrante1 = new Quadrante();
+                Quadrante quadrante2 = new Quadrante();
+                Quadrante quadrante3 = new Quadrante();
+                Quadrante quadrante4 = new Quadrante();
+
+                //--
+                quadrante1.TecnicaId = tecnica.IdTecnica;
+                quadrante2.TecnicaId = tecnica.IdTecnica;
+                quadrante3.TecnicaId = tecnica.IdTecnica;
+                quadrante4.TecnicaId = tecnica.IdTecnica;
+
+                //--
+                quadrante1.Tecnica = tecnica;
+                quadrante2.Tecnica = tecnica; 
+                quadrante3.Tecnica = tecnica;
+                quadrante4.Tecnica = tecnica;
+
+                //---
+                quadrante1.PosicaoQuadrante = 1;
+                quadrante2.PosicaoQuadrante = 2;
+                quadrante3.PosicaoQuadrante = 3;
+                quadrante4.PosicaoQuadrante = 4;
+
+                //---
+                quadrante1.Nome_Quad = "Quadrante1";
+                quadrante2.Nome_Quad = "Quadrante2";
+                quadrante3.Nome_Quad = "Quadrante3";
+                quadrante4.Nome_Quad = "Quadrante4";
+
+
+                //---
+
+                _context.Add(quadrante1);
+                _context.Add(quadrante2);
+                _context.Add(quadrante3);
+                _context.Add(quadrante4);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -93,7 +131,7 @@ namespace ProjetoDeSia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdTecnica,Nome,Descricao,nomeQuadrante1,nomeQuadrante2,nomeQuadrante3,nomeQuadrante4,UtilizadorId")] Tecnica tecnica)
+        public async Task<IActionResult> Edit(int id, [Bind("IdTecnica,Nome,Descricao,UtilizadorId")] Tecnica tecnica)
         {
             if (id != tecnica.IdTecnica)
             {

@@ -39,6 +39,7 @@
                             @Html.DisplayFor(modelItem => item.Descricao)
                         </td>
                         <td>
+                            <a asp-action="Entrar" asp-route-id="@item.IdTecnica">Entrar</a> |
                             <a asp-action="Edit" asp-route-id="@item.IdTecnica">Edit</a> |
                             <a asp-action="Details" asp-route-id="@item.IdTecnica">Details</a> |
                             <a asp-action="Delete" asp-route-id="@item.IdTecnica">Delete</a>
@@ -50,4 +51,3 @@
         </tbody>
     </table>
 }
-

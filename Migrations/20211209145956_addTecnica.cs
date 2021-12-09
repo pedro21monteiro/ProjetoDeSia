@@ -14,10 +14,6 @@ namespace ProjetoDeSia.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    nomeQuadrante1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    nomeQuadrante2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    nomeQuadrante3 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    nomeQuadrante4 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UtilizadorId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

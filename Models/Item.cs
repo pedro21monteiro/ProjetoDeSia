@@ -14,6 +14,8 @@ namespace ProjetoDeSia.Models
         [Required]//a descrição é o nome do quadrante
         public string Descricao { get; set; }
 
+        
+
         //não é required pois a pontuação é gerada automaticamente
         public double Pontucao { get; set; }//0,1,2 ou 3, posições dos 4 quadrantes
         [Required]
@@ -28,6 +30,6 @@ namespace ProjetoDeSia.Models
         public int TecnicaId { get; set; }
 
         //tem um quadrante id
-        public int PosicaoId { get; set; }
+        public int QuadId { get; set; }
     }
 }

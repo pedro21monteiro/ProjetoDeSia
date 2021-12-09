@@ -10,23 +10,23 @@ using ProjetoDeSia.Models;
 
 namespace ProjetoDeSia.Controllers
 {
-    public class ItemsController : Controller
+    public class QuadrantesController : Controller
     {
         private readonly ProjetoDeSiaContext _context;
 
-        public ItemsController(ProjetoDeSiaContext context)
+        public QuadrantesController(ProjetoDeSiaContext context)
         {
             _context = context;
         }
 
-        // GET: Items
+        // GET: Quadrantes
         public async Task<IActionResult> Index()
         {
-            var projetoDeSiaContext = _context.Item.Include(i => i.Tecnica);
+            var projetoDeSiaContext = _context.Quadrante.Include(q => q.Tecnica);
             return View(await projetoDeSiaContext.ToListAsync());
         }
 
-        // GET: Items/Details/5
+        // GET: Quadrantes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +34,42 @@ namespace ProjetoDeSia.Controllers
                 return NotFound();
             }
 
-            var item = await _context.Item
-                .Include(i => i.Tecnica)
-                .FirstOrDefaultAsync(m => m.IdItem == id);
-            if (item == null)
+            var quadrante = await _context.Quadrante
+                .Include(q => q.Tecnica)
+                .FirstOrDefaultAsync(m => m.IdQuadrante == id);
+            if (quadrante == null)
             {
                 return NotFound();
             }
 
-            return View(item);
+            return View(quadrante);
         }
 
-        // GET: Items/Create
+        // GET: Quadrantes/Create
         public IActionResult Create()
         {
             ViewData["TecnicaId"] = new SelectList(_context.Tecnica, "IdTecnica", "Descricao");
             return View();
         }
 
-        // POST: Items/Create
+        // POST: Quadrantes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdItem,Descricao,Pontucao,Importancia,classificacao,TecnicaId,QuadId")] Item item)
+        public async Task<IActionResult> Create([Bind("IdQuadrante,Nome_Quad,PosicaoQuadrante,TecnicaId")] Quadrante quadrante)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(item);
+                _context.Add(quadrante);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TecnicaId"] = new SelectList(_context.Tecnica, "IdTecnica", "Descricao", item.TecnicaId);
-            return View(item);
+            ViewData["TecnicaId"] = new SelectList(_context.Tecnica, "IdTecnica", "Descricao", quadrante.TecnicaId);
+            return View(quadrante);
         }
 
-        // GET: Items/Edit/5
+        // GET: Quadrantes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +77,23 @@ namespace ProjetoDeSia.Controllers
                 return NotFound();
             }
 
-            var item = await _context.Item.FindAsync(id);
-            if (item == null)
+            var quadrante = await _context.Quadrante.FindAsync(id);
+            if (quadrante == null)
             {
                 return NotFound();
             }
-            ViewData["TecnicaId"] = new SelectList(_context.Tecnica, "IdTecnica", "Descricao", item.TecnicaId);
-            return View(item);
+            ViewData["TecnicaId"] = new SelectList(_context.Tecnica, "IdTecnica", "Descricao", quadrante.TecnicaId);
+            return View(quadrante);
         }
 
-        // POST: Items/Edit/5
+        // POST: Quadrantes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdItem,Descricao,Pontucao,Importancia,classificacao,TecnicaId,QuadId")] Item item)
+        public async Task<IActionResult> Edit(int id, [Bind("IdQuadrante,Nome_Quad,PosicaoQuadrante,TecnicaId")] Quadrante quadrante)
         {
-            if (id != item.IdItem)
+            if (id != quadrante.IdQuadrante)
             {
                 return NotFound();
             }
@@ -102,12 +102,12 @@ namespace ProjetoDeSia.Controllers
             {
                 try
                 {
-                    _context.Update(item);
+                    _context.Update(quadrante);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ItemExists(item.IdItem))
+                    if (!QuadranteExists(quadrante.IdQuadrante))
                     {
                         return NotFound();
                     }
@@ -118,11 +118,11 @@ namespace ProjetoDeSia.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TecnicaId"] = new SelectList(_context.Tecnica, "IdTecnica", "Descricao", item.TecnicaId);
-            return View(item);
+            ViewData["TecnicaId"] = new SelectList(_context.Tecnica, "IdTecnica", "Descricao", quadrante.TecnicaId);
+            return View(quadrante);
         }
 
-        // GET: Items/Delete/5
+        // GET: Quadrantes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,31 +130,31 @@ namespace ProjetoDeSia.Controllers
                 return NotFound();
             }
 
-            var item = await _context.Item
-                .Include(i => i.Tecnica)
-                .FirstOrDefaultAsync(m => m.IdItem == id);
-            if (item == null)
+            var quadrante = await _context.Quadrante
+                .Include(q => q.Tecnica)
+                .FirstOrDefaultAsync(m => m.IdQuadrante == id);
+            if (quadrante == null)
             {
                 return NotFound();
             }
 
-            return View(item);
+            return View(quadrante);
         }
 
-        // POST: Items/Delete/5
+        // POST: Quadrantes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var item = await _context.Item.FindAsync(id);
-            _context.Item.Remove(item);
+            var quadrante = await _context.Quadrante.FindAsync(id);
+            _context.Quadrante.Remove(quadrante);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ItemExists(int id)
+        private bool QuadranteExists(int id)
         {
-            return _context.Item.Any(e => e.IdItem == id);
+            return _context.Quadrante.Any(e => e.IdQuadrante == id);
         }
     }
 }
