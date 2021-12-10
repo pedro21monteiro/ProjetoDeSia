@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -116,7 +117,10 @@ namespace ProjetoDeSia.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //depois sempre que for alterado o nome de um quadrante vai ter de atualizar a classificação dos itens daquele quadrante
+
+                //quando se edita corretamente tem de se retornar para a view entrarTecnica
+                return RedirectToAction("EntrarTecnica", "Tecnicas", new { @id = HttpContext.Session.GetInt32("TecnicaId")});
             }
             ViewData["TecnicaId"] = new SelectList(_context.Tecnica, "IdTecnica", "Descricao", quadrante.TecnicaId);
             return View(quadrante);

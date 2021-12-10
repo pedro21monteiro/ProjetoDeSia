@@ -39,9 +39,8 @@
                             @Html.DisplayFor(modelItem => item.Descricao)
                         </td>
                         <td>
-                            <a asp-action="Entrar" asp-route-id="@item.IdTecnica">Entrar</a> |
+                            <a asp-action="EntrarTecnica" asp-route-id="@item.IdTecnica">Entrar</a> |
                             <a asp-action="Edit" asp-route-id="@item.IdTecnica">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.IdTecnica">Details</a> |
                             <a asp-action="Delete" asp-route-id="@item.IdTecnica">Delete</a>
                         </td>
                     </tr>
@@ -50,4 +49,9 @@
             }
         </tbody>
     </table>
+}
+else
+{
+    <h1>Erro!!</h1>
+    <h1>Voce não tem autorização para aceder a esta página</h1>
 }

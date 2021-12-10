@@ -11,9 +11,12 @@ namespace ProjetoDeSia.Models
         public Item oItem { get; set; }
         public Quadrante oQuadrante { get; set; }
 
-        public List<Tecnica> oListTecnica { get; set; }
         public List<Item> oListItem { get; set; }
         public List<Quadrante> oListQuadrante { get; set; }
+
+
+        //ver se o utilizador tem autorização para aceder a viewModel
+        public bool temPermicoes { get; set; }
 
     }
 }

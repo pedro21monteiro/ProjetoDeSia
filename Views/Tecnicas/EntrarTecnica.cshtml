@@ -1,0 +1,122 @@
+﻿@using Microsoft.AspNetCore.Http;
+@model UsarTecnicaViewModel
+
+@{
+    ViewData["Title"] = "EntrarTecnica";
+}
+
+@if (Model.temPermicoes == true)
+{
+
+    <h1>Nome Tecnica: @Model.oTecnica.Nome</h1>
+
+    <h2>Quadrantes:</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Nome do Quadrante
+                </th>
+                <th>
+                    Posição do Quadrante
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.oListQuadrante)
+            {
+
+                <!-- Só pode aparecer os quadrantes referentes à tecnica-->
+                <tr>
+
+                    @if (item.TecnicaId == @ViewBag.IdTecnica)
+                    {
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome_Quad)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PosicaoQuadrante)
+                        </td>
+
+                        <td>
+                            <!-- Só dá para iditar o quadrante-->
+                            <a asp-controller="Quadrantes" asp-action="Edit" asp-route-id="@item.IdQuadrante">Editar Nome</a>
+                        </td>
+
+                    }
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+    <h2>Itens:</h2>
+    <p>
+        <a asp-controller="Items" asp-action="Create">Criar novo item</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Descricao
+                </th>
+                <th>
+                    Pontuacao
+                </th>
+                <th>
+                    Importancia
+                </th>
+                <th>
+                    Classificação
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.oListItem)
+            {
+
+                <!-- Só pode aparecer os itens referentes à tecnica-->
+            <tr>
+
+                @if (item.TecnicaId == @ViewBag.IdTecnica)
+                {
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Descricao)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Pontucao)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Importancia)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.classificacao)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.IdItem">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.IdItem">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.IdItem">Delete</a>
+                    </td>
+
+                }
+
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h1>Erro!!</h1>
+    <h1>Voce não tem autorização para aceder a esta página</h1>
+}
+
+

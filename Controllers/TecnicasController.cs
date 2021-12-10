@@ -196,5 +196,44 @@ namespace ProjetoDeSia.Controllers
         {
             return _context.Tecnica.Any(e => e.IdTecnica == id);
         }
+
+
+        
+       //---------------------Minhas Funções------------------------------
+
+        public async Task<IActionResult> EntrarTecnica(int? id) //id da tecnica
+        {
+    
+            UsarTecnicaViewModel usarTecnicaViewModel = new UsarTecnicaViewModel();
+            Tecnica tecnica = await _context.Tecnica.FirstOrDefaultAsync(m => m.IdTecnica == id);
+
+            //verificar se o id da tecnica pertence ao id do utilizador logado      
+            if (tecnica != null && tecnica.UtilizadorId.ToString() == HttpContext.Session.GetString("UtilizadorId"))
+            {
+                usarTecnicaViewModel.oTecnica = tecnica;
+                //meter a view vag do id da tecnica que esta aberta
+                ViewBag.IdTecnica = tecnica.IdTecnica;
+                HttpContext.Session.SetInt32("TecnicaId", tecnica.IdTecnica);
+               
+
+                //se o id da tecnica for igual ao do utilizador tem permições para aceder a pagina
+                usarTecnicaViewModel.temPermicoes = true;
+
+                //preencher a lista de quadrantes
+                usarTecnicaViewModel.oListQuadrante = _context.Quadrante.ToList();
+
+                //preencher a lista dos itens
+                usarTecnicaViewModel.oListItem = _context.Item.ToList();
+            }
+            else
+            {
+                usarTecnicaViewModel.temPermicoes = false;
+            }
+
+            return View(usarTecnicaViewModel);
+
+        }
+
+
     }
 }
