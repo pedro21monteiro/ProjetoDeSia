@@ -188,6 +188,28 @@ namespace ProjetoDeSia.Controllers
         {
             var tecnica = await _context.Tecnica.FindAsync(id);
             _context.Tecnica.Remove(tecnica);
+
+            //quando se apaga uma tecnica tem de se apagar da base de dados todos os itens e quadrantes que pertencem a essa tecnia
+            //apagar itens
+            foreach (Item item in _context.Item.ToList())
+            {
+                if (item.TecnicaId == id)
+                {
+                    //apagar os itens
+                    _context.Item.Remove(item);
+
+                }
+            }
+            //apagar quadrantes
+            foreach (Quadrante quad in _context.Quadrante.ToList())
+            {
+                if (quad.TecnicaId == id)
+                {
+                    //apagar os itens
+                    _context.Quadrante.Remove(quad);
+
+                }
+            }
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

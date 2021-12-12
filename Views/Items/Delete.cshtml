@@ -1,4 +1,5 @@
 ﻿@model ProjetoDeSia.Models.Item
+@using Microsoft.AspNetCore.Http;
 
 @{
     ViewData["Title"] = "Delete";
@@ -11,47 +12,63 @@
     <h4>Item</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Descricao)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Descricao)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Pontucao)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Pontucao)
         </dd>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Importancia)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Importancia)
-        </dd>
-        <dt class = "col-sm-2">
+        @if (Model.Importancia == 0)
+        {
+            <dd class="col-sm-10">
+                Totalmente sem importância
+            </dd>
+
+        } @if (Model.Importancia == 1)
+        {
+            <dd class="col-sm-10">
+                Pouca importância
+            </dd>
+
+        } @if (Model.Importancia == 2)
+        {
+            <dd class="col-sm-10">
+                Importante
+            </dd>
+
+        } @if (Model.Importancia == 3)
+        {
+    <dd class="col-sm-10">
+        Muito importante
+    </dd>
+          
+        } @if (Model.Importancia == 4)
+        {
+    <dd class="col-sm-10">
+        Totalmente importante
+    </dd>
+        }
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.classificacao)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.classificacao)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Tecnica)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Tecnica.Descricao)
-        </dd class>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.QuadId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.QuadId)
-        </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="IdItem" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-controller="Tecnicas" asp-action="EntrarTecnica" asp-route-id="@Context.Session.GetInt32("TecnicaId")">Voltar</a>
     </form>
 </div>

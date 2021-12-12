@@ -1,4 +1,5 @@
 ﻿@model ProjetoDeSia.Models.Item
+@using Microsoft.AspNetCore.Http;
 
 @{
     ViewData["Title"] = "Edit";
@@ -18,31 +19,43 @@
                 <input asp-for="Descricao" class="form-control" />
                 <span asp-validation-for="Descricao" class="text-danger"></span>
             </div>
+
+            <!-- vai se transformar na classificacao-->
             <div class="form-group">
+                <label asp-for="QuadId" class="control-label"></label>
+                <select asp-for="QuadId" class="form-control" asp-items="ViewBag.QuadId"></select>
+
+            </div>
+            <!-- vou ter de meter uma combobox de 0 a 5 em string-->
+            <div class="form-group">
+                <label asp-for="Importancia" class="control-label"></label>
+                @*<input asp-for="Importancia" class="form-control" />
+                    <span asp-validation-for="Importancia" class="text-danger"></span>*@
+                <select asp-for="Importancia" class="form-control">
+                    <option value=0>Totalmente sem importância</option>
+                    <option value=1>Pouca importância</option>
+                    <option value=2>Importante</option>
+                    <option value=3>Muito importante</option>
+                    <option value=4>Totalmente importante</option>
+                </select>
+            </div>
+            <!--------------------------- A PARTIR DAQUI TUDO É GERADO NOS CONTROLLERS.-------------------------------------->
+            <div class="form-group" hidden>
                 <label asp-for="Pontucao" class="control-label"></label>
                 <input asp-for="Pontucao" class="form-control" />
                 <span asp-validation-for="Pontucao" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Importancia" class="control-label"></label>
-                <input asp-for="Importancia" class="form-control" />
-                <span asp-validation-for="Importancia" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="classificacao" class="control-label"></label>
                 <input asp-for="classificacao" class="form-control" />
                 <span asp-validation-for="classificacao" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="TecnicaId" class="control-label"></label>
                 <select asp-for="TecnicaId" class="form-control" asp-items="ViewBag.TecnicaId"></select>
                 <span asp-validation-for="TecnicaId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="QuadId" class="control-label"></label>
-                <input asp-for="QuadId" class="form-control" />
-                <span asp-validation-for="QuadId" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -51,7 +64,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Tecnicas" asp-action="EntrarTecnica" asp-route-id="@Context.Session.GetInt32("TecnicaId")">Voltar</a>
 </div>
 
 @section Scripts {

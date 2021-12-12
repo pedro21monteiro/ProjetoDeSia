@@ -94,16 +94,31 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Pontucao)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Importancia)
-                    </td>
+
+                    @if (item.Importancia == 0)
+                    {
+                        <td>Totalmente sem importância</td>
+                    } @if (item.Importancia == 1)
+                    {
+                        <td>Pouca importância</td>
+                    } @if (item.Importancia == 2)
+                    {
+                        <td>Importante</td>
+                    } @if (item.Importancia == 3)
+                    {
+                        <td>Muito importante</td>
+                    } @if (item.Importancia == 4)
+                    {
+                        <td>Totalmente importante</td>
+                    }
+
+
                     <td>
                         @Html.DisplayFor(modelItem => item.classificacao)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.IdItem">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.IdItem">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.IdItem">Delete</a>
+                        <a asp-controller="Items" asp-action="Edit" asp-route-id="@item.IdItem">Editar</a> |
+                        <a asp-controller="Items" asp-action="Delete" asp-route-id="@item.IdItem">Delete</a>
                     </td>
 
                 }

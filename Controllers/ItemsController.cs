@@ -63,6 +63,8 @@ namespace ProjetoDeSia.Controllers
                 }
             }
             ViewData["QuadId"] = new SelectList(listaTodosQuad, "IdQuadrante", "Nome_Quad");
+            
+
             return View();
         }
 
@@ -106,11 +108,13 @@ namespace ProjetoDeSia.Controllers
                 }
                 //TecnicaID
                 item.TecnicaId = (int)HttpContext.Session.GetInt32("TecnicaId");
-                
+
 
                 _context.Add(item);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //depois de criar o item tem de redirecionar para a pagina do entrarTecnicas
+
+                return RedirectToAction("EntrarTecnica", "Tecnicas", new { @id = HttpContext.Session.GetInt32("TecnicaId") });
             }
             ViewData["TecnicaId"] = new SelectList(_context.Tecnica, "IdTecnica", "Descricao", item.TecnicaId);
             return View(item);
@@ -129,6 +133,18 @@ namespace ProjetoDeSia.Controllers
             {
                 return NotFound();
             }
+            List<Quadrante> listaTodosQuad = new List<Quadrante>();
+
+            foreach (Quadrante quad in _context.Quadrante.ToList())
+            {
+                if (quad.TecnicaId == HttpContext.Session.GetInt32("TecnicaId"))
+                {
+                    //remover da lista
+                    listaTodosQuad.Add(quad);
+                }
+            }
+            ViewData["QuadId"] = new SelectList(listaTodosQuad, "IdQuadrante", "Nome_Quad");
+
             ViewData["TecnicaId"] = new SelectList(_context.Tecnica, "IdTecnica", "Descricao", item.TecnicaId);
             return View(item);
         }
@@ -138,7 +154,7 @@ namespace ProjetoDeSia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdItem,Descricao,Pontucao,Importancia,classificacao,TecnicaId,QuadId")] Item item)
+        public async Task<IActionResult> Edit(int id, [Bind("IdItem,Descricao,QuadId,Importancia")] Item item)
         {
             if (id != item.IdItem)
             {
@@ -149,6 +165,37 @@ namespace ProjetoDeSia.Controllers
             {
                 try
                 {
+                    //gerar automaticamente:
+                    //Pontuação que é 0-1-2-3-4
+                    if (item.Importancia == 0)
+                    {
+                        item.Pontucao = 0;
+                    }
+                    if (item.Importancia == 1)
+                    {
+                        item.Pontucao = 2.5;
+                    }
+                    if (item.Importancia == 2)
+                    {
+                        item.Pontucao = 5;
+                    }
+                    if (item.Importancia == 3)
+                    {
+                        item.Pontucao = 7.5;
+                    }
+                    if (item.Importancia == 4)
+                    {
+                        item.Pontucao = 10;
+                    }
+                    //Classificaçao - nome do quadrante que esta associado
+                    Quadrante q = _context.Quadrante.SingleOrDefault(q => q.IdQuadrante == item.QuadId);
+                    if (q != null)
+                    {
+                        item.classificacao = q.Nome_Quad;
+                    }
+                    //TecnicaID 
+                    //não é preciso pois já esta criado
+                    item.TecnicaId = (int)HttpContext.Session.GetInt32("TecnicaId");
                     _context.Update(item);
                     await _context.SaveChangesAsync();
                 }
@@ -163,7 +210,9 @@ namespace ProjetoDeSia.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //depois de editar vai voltar para a tecnica
+                return RedirectToAction("EntrarTecnica", "Tecnicas", new { @id = HttpContext.Session.GetInt32("TecnicaId") });
+               // return RedirectToAction(nameof(Index));
             }
             ViewData["TecnicaId"] = new SelectList(_context.Tecnica, "IdTecnica", "Descricao", item.TecnicaId);
             return View(item);

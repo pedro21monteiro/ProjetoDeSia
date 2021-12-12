@@ -1,4 +1,5 @@
 ﻿@model ProjetoDeSia.Models.Item
+@using Microsoft.AspNetCore.Http;
 
 @{
     ViewData["Title"] = "Create";
@@ -26,8 +27,15 @@
             <!-- vou ter de meter uma combobox de 0 a 5 em string-->
             <div class="form-group">
                 <label asp-for="Importancia" class="control-label"></label>
-                <input asp-for="Importancia" class="form-control" />
-                <span asp-validation-for="Importancia" class="text-danger"></span>
+                @*<input asp-for="Importancia" class="form-control" />
+                    <span asp-validation-for="Importancia" class="text-danger"></span>*@
+                <select asp-for="Importancia" class="form-control">
+                    <option value=0>Totalmente sem importância</option>
+                    <option value=1>Pouca importância</option>
+                    <option value=2>Importante</option>
+                    <option value=3>Muito importante</option>
+                    <option value=4>Totalmente importante</option>
+                </select>
             </div>
 
 
@@ -58,7 +66,8 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+
+    <a asp-controller="Tecnicas" asp-action="EntrarTecnica" asp-route-id="@Context.Session.GetInt32("TecnicaId")">Voltar</a>
 </div>
 
 @section Scripts {

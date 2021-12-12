@@ -118,7 +118,19 @@ namespace ProjetoDeSia.Controllers
                     }
                 }
                 //depois sempre que for alterado o nome de um quadrante vai ter de atualizar a classificação dos itens daquele quadrante
+                
 
+                foreach (Item item in _context.Item.ToList())
+                {
+                    if (item.QuadId == quadrante.IdQuadrante)
+                    {
+                        //atualizar os nomes
+                        item.classificacao = quadrante.Nome_Quad;
+                        _context.Update(item);
+                       
+                    }
+                }
+                await _context.SaveChangesAsync();
                 //quando se edita corretamente tem de se retornar para a view entrarTecnica
                 return RedirectToAction("EntrarTecnica", "Tecnicas", new { @id = HttpContext.Session.GetInt32("TecnicaId")});
             }
