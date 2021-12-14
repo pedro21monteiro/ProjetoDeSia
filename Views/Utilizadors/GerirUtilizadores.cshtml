@@ -1,0 +1,76 @@
+﻿@model IEnumerable<ProjetoDeSia.Models.Utilizador>
+@using Microsoft.AspNetCore.Http;
+
+@{
+    ViewData["Title"] = "GerirUtilizadores";
+}
+
+<!-- Só pode aceder a esta pagina os admins-->
+@if (Context.Session.GetInt32("Categoria") <= 0)
+{
+    <h1>Gerir Utilizadores</h1>
+
+    <h1>Lista de utilizadores:</h1>
+
+    <!-- Pesquisar por nome-->
+    <form action="#" method="post">
+        <input type="text" name="search" id="search" placeholder="Faça sua busca" required />
+        <button type="submit"><i class="fas fa-search"></i></button>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Password)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Password)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.IdUtilizador">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.IdUtilizador">Delete</a> |
+
+                        <!-- Se for admin e a conta logada for admin master pode retirar o admin, de resto admins normais não podem retirar o admin a outros admins-->
+                        <!-- Primeira opção, é admim master-->
+
+                            <!-- se for -1 não aparece nada pq ninguem o pode editar-->
+                            @if (item.Categoria == 0)
+                            {
+                                <a asp-action="RetirarAdmin" asp-route-id="@item.IdUtilizador">Retirar Admin</a>
+                            }@if (item.Categoria == 1)
+                            {
+                                <a asp-action="DarAdmin" asp-route-id="@item.IdUtilizador">Dar Admin</a>
+                            }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h1>Erro!!</h1>
+    <h1>Voce não tem autorização para aceder a esta página</h1>
+}
+
+

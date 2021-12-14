@@ -19,9 +19,10 @@ namespace ProjetoDeSia.Models
         public string Password { get; set; }
 
         [Required]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        public int Categoria { get; set; } //0- Admin, 1- utilizador
+        public int Categoria { get; set; } //-1-Admin master, 0- Admin, 1- utilizador
 
         public ICollection<Tecnica> Tecnica { get; set; }
     }

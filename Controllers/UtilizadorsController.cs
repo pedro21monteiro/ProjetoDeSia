@@ -175,10 +175,12 @@ namespace ProjetoDeSia.Controllers
                 if (u == null && e == null)
                 {
                     utilizador.Categoria = 1;//vai ser sempre registo em utilizador
+
                     _context.Add(utilizador);
                     await _context.SaveChangesAsync();
                     HttpContext.Session.SetString("Utilizador", utilizador.UserName);
                     HttpContext.Session.SetString("UtilizadorId", utilizador.IdUtilizador.ToString());
+                    HttpContext.Session.SetInt32("Categoria", utilizador.Categoria);
                     return RedirectToAction("Index", "Home");
                 }
                 if (u != null)
@@ -208,6 +210,12 @@ namespace ProjetoDeSia.Controllers
             {
                 Utilizador u = _context.Utilizador.SingleOrDefault(u => u.UserName == UserName && u.Password == Password);
 
+                //se o username ou a passowd não forem exatamente iguais minusculas ou maiusculas vai dar erro
+                if (!u.UserName.Equals(UserName) || !u.Password.Equals(Password))
+                {
+                    u = null;
+                }
+
                 if (u == null)
                 {
                     ModelState.AddModelError("username", "Username ou password está incorreta !!");
@@ -217,11 +225,13 @@ namespace ProjetoDeSia.Controllers
                         HttpContext.Session.SetString("Utilizador", UserName);
                         HttpContext.Session.SetString("UtilizadorId", u.IdUtilizador.ToString());
 
-                        return RedirectToAction("Index", "Home");
-                   // if (u.Categoria == "Admin")
-                  //  {
-                  //      HttpContext.Session.SetString("categoria", "Admin");//mete na palavra chave categoria a palavra Admin
-                  //  }
+                    //verificar qual a categoria do utilizador e meter na cookie
+                    //0-admin, 1-utilizador, -1 Admin Master
+
+                    HttpContext.Session.SetInt32("Categoria", u.Categoria);
+           
+
+                    return RedirectToAction("Index", "Home");
 
                 }
             }
@@ -235,6 +245,106 @@ namespace ProjetoDeSia.Controllers
             return RedirectToAction("Index", "Home");
         }
         //Fim-Logiut---------------------------------------------
+
+        //-----------------------------------gerir Utilizadores-------------------------------
+        public async Task<IActionResult> GerirUtilizadores()
+        {
+            return View(await _context.Utilizador.ToListAsync());
+           
+        }
+
+        //// POST: Utilizadors/Create
+        //// To protect from overposting attacks, enable the specific properties you want to bind to.
+        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> GerirUtilizadores()
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        //_context.Add(utilizador);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View();
+        //}
+
+        //-----------------------------------------------------------------------------------
+
+
+        //--------------------DAR ADMIN-------------------------------------------------------
+        public async Task<IActionResult> DarAdmin(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var utilizador = await _context.Utilizador.FindAsync(id);
+            if (utilizador == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                //se for admin master ou admin não faz nada
+                //se for utilizador
+                if(utilizador.Categoria == 1)
+                {
+                    utilizador.Categoria = 0;
+                    _context.Update(utilizador);
+                    await _context.SaveChangesAsync();
+                    
+                }
+
+            }
+            //no final vai returnar a view que já estava, neste caso gerir utilizadores
+            return RedirectToAction("GerirUtilizadores", "Utilizadors");
+        }
+
+
+        //--------------------RETIRAR ADMIN-------------------------------------------------------
+        public async Task<IActionResult> RetirarAdmin(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var utilizador = await _context.Utilizador.FindAsync(id);
+            if (utilizador == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                //se for admin master não faz nada
+                //se for admin pode retirar admin
+                if (utilizador.Categoria == 0)
+                {
+                    utilizador.Categoria = 1;                 
+                }
+                _context.Update(utilizador);
+                await _context.SaveChangesAsync();
+
+            }
+            //no final vai returnar a view que já estava, neste caso gerir utilizadores
+            return RedirectToAction("GerirUtilizadores", "Utilizadors");
+        }
+
+
+        //------------------------------------------Perfil------------------------------
+        public IActionResult Perfil(int? id)
+        {
+            Utilizador u = _context.Utilizador.SingleOrDefault(u => u.IdUtilizador == id);
+
+            if (u == null)
+            {
+                return NotFound();
+            }
+            else
+                return View(u);
+        }
 
     }
 }

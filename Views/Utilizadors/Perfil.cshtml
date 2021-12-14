@@ -1,0 +1,35 @@
+﻿@model Utilizador
+@using Microsoft.AspNetCore.Http;
+
+@{
+    ViewData["Title"] = "Perfil";
+}
+
+<h1>Perfil</h1>
+
+@if (Model.IdUtilizador.ToString() == Context.Session.GetString("UtilizadorId"))
+{
+<tr>
+    <td>
+        <a asp-controller="Utilizadors" asp-action="EditarNome" asp-route-id="@Model.IdUtilizador">Editar Nome</a>
+        <br>
+    </td>
+    <td>
+        <a asp-controller="Utilizadors" asp-action="EditarPassword" asp-route-id="@Model.IdUtilizador">Editar Password</a>
+        <br>
+    </td>
+    <td>
+        <a asp-controller="Utilizadors" asp-action="EditarEmail" asp-route-id="@Model.IdUtilizador">Editar Email</a>
+        <br>
+    </td>
+
+
+</tr>
+}
+else
+{
+    <h1>Erro!!</h1>
+    <h1>Voce não tem autorização para aceder a esta página</h1>
+}
+
+
