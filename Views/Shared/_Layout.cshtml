@@ -47,6 +47,10 @@
             {
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 <ul class="navbar-nav flex-grow-1">
+
+                    <li class="nav-item">
+                        <a>Bem vindo @Context.Session.GetString("Utilizador")!!</a>
+                    </li>
                     <!-- Se for admin vai ter opções extras, os admins tem categoria 0 ou -1-->
                     @if (Context.Session.GetInt32("Categoria") <= 0)
                     {

@@ -209,31 +209,34 @@ namespace ProjetoDeSia.Controllers
             if (ModelState.IsValid)
             {
                 Utilizador u = _context.Utilizador.SingleOrDefault(u => u.UserName == UserName && u.Password == Password);
-
-                //se o username ou a passowd não forem exatamente iguais minusculas ou maiusculas vai dar erro
-                if (!u.UserName.Equals(UserName) || !u.Password.Equals(Password))
-                {
-                    u = null;
-                }
-
                 if (u == null)
                 {
                     ModelState.AddModelError("username", "Username ou password está incorreta !!");
                 }
-                else
-                {
+                //se o username ou a passowd não forem exatamente iguais minusculas ou maiusculas vai dar erro
+                else {
+                    if (!u.UserName.Equals(UserName) || !u.Password.Equals(Password))
+                    {
+                        u = null;
+                    }
+
+
+                    else
+                    {
                         HttpContext.Session.SetString("Utilizador", UserName);
                         HttpContext.Session.SetString("UtilizadorId", u.IdUtilizador.ToString());
 
-                    //verificar qual a categoria do utilizador e meter na cookie
-                    //0-admin, 1-utilizador, -1 Admin Master
+                        //verificar qual a categoria do utilizador e meter na cookie
+                        //0-admin, 1-utilizador, -1 Admin Master
 
-                    HttpContext.Session.SetInt32("Categoria", u.Categoria);
-           
+                        HttpContext.Session.SetInt32("Categoria", u.Categoria);
 
-                    return RedirectToAction("Index", "Home");
 
+                        return RedirectToAction("Index", "Home");
+
+                    }
                 }
+                
             }
             return View();
         }
@@ -346,5 +349,132 @@ namespace ProjetoDeSia.Controllers
                 return View(u);
         }
 
+        //------------------------------------------Editar Nome------------------------------
+        // GET: Utilizadors/Edit/5
+        public async Task<IActionResult> EditarNome(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var utilizador = await _context.Utilizador.FindAsync(id);
+            if (utilizador == null)
+            {
+                return NotFound();
+            }
+            return View(utilizador);
+        }
+
+        // POST: Utilizadors/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditarNome(int id, [Bind("IdUtilizador,UserName,Password,Email,Categoria")] Utilizador utilizador)
+        {
+            if (id != utilizador.IdUtilizador)
+            {
+                return NotFound();
+            }
+            //verifcar se já existe alguem com esse nome
+            Utilizador u = _context.Utilizador.SingleOrDefault(u => u.UserName == utilizador.UserName);
+
+            if (u != null)
+            {
+                ModelState.AddModelError("Username", "Já existe um utilizador com esse nome !!");
+            }
+            else {
+
+                //editar a cookie
+                HttpContext.Session.SetString("Utilizador", utilizador.UserName);
+                _context.Update(utilizador);
+                    await _context.SaveChangesAsync();
+                return RedirectToAction("Perfil", "Utilizadors", new { @id = id });
+            }
+            //vai redirecionar para o perfil              
+            return View(utilizador);
+        }
+
+
+        //------------------------------------------Editar Password------------------------------
+        // GET: Utilizadors/Edit/5
+        public async Task<IActionResult> EditarPassword(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var utilizador = await _context.Utilizador.FindAsync(id);
+            if (utilizador == null)
+            {
+                return NotFound();
+            }
+            return View(utilizador);
+        }
+
+        // POST: Utilizadors/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditarPassword(int id, [Bind("IdUtilizador,UserName,Password,Email,Categoria")] Utilizador utilizador)
+        {
+            if (id != utilizador.IdUtilizador)
+            {
+                return NotFound();
+            }
+            //verifcar se já existe alguem com esse nom
+            else
+            {             
+                _context.Update(utilizador);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Perfil", "Utilizadors", new { @id = id });
+            }
+
+           // return View(utilizador);
+        }
+
+
+        //------------------------------------------Editar Email------------------------------
+        // GET: Utilizadors/Edit/5
+        public async Task<IActionResult> EditarEmail(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var utilizador = await _context.Utilizador.FindAsync(id);
+            if (utilizador == null)
+            {
+                return NotFound();
+            }
+            return View(utilizador);
+        }
+
+        // POST: Utilizadors/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditarEmail(int id, [Bind("IdUtilizador,UserName,Password,Email,Categoria")] Utilizador utilizador)
+        {
+            if (id != utilizador.IdUtilizador)
+            {
+                return NotFound();
+            }
+            //verifcar se já existe alguem com esse nome
+
+            else
+            {
+                _context.Update(utilizador);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Perfil", "Utilizadors", new { @id = id });
+            }
+
+            // return View(utilizador);
+        }
     }
 }
