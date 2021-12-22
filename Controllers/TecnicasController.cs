@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -244,8 +245,20 @@ namespace ProjetoDeSia.Controllers
                 //preencher a lista de quadrantes
                 usarTecnicaViewModel.oListQuadrante = _context.Quadrante.ToList();
 
+
                 //preencher a lista dos itens
                 usarTecnicaViewModel.oListItem = _context.Item.ToList();
+
+                //preencher os 4 quadrantes
+                usarTecnicaViewModel.Preencher4quadrantes(tecnica.IdTecnica, _context);
+
+                //agora vamos ter de criar a pontuação geral de cada quadrante
+                await usarTecnicaViewModel.CriarPontuacaoGeralAsync(tecnica.IdTecnica, _context);
+
+                //gerar os valores para gerar os quatro graficos GraficoQuadNomeXimportancia----------------------
+                await usarTecnicaViewModel.gerarGraficoQuadNomeXimportanciaAsync(tecnica.IdTecnica, _context);
+               
+
             }
             else
             {
@@ -254,8 +267,8 @@ namespace ProjetoDeSia.Controllers
 
             return View(usarTecnicaViewModel);
 
-        }
-
-
+        }  
+        
+        //---------------------------------------------------------------------
     }
 }

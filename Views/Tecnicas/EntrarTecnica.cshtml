@@ -5,6 +5,10 @@
     ViewData["Title"] = "EntrarTecnica";
 }
 
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js" type="text/javascript"></script>
+</head>
+
 @if (Model.temPermicoes == true)
 {
 
@@ -83,50 +87,338 @@
             {
 
                 <!-- Só pode aparecer os itens referentes à tecnica-->
-            <tr>
+                <tr>
 
-                @if (item.TecnicaId == @ViewBag.IdTecnica)
-                {
+                    @if (item.TecnicaId == @ViewBag.IdTecnica)
+                    {
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Descricao)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Pontucao)
-                    </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Descricao)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Pontucao)
+                        </td>
 
-                    @if (item.Importancia == 0)
-                    {
-                        <td>Totalmente sem importância</td>
-                    } @if (item.Importancia == 1)
-                    {
-                        <td>Pouca importância</td>
-                    } @if (item.Importancia == 2)
-                    {
-                        <td>Importante</td>
-                    } @if (item.Importancia == 3)
-                    {
-                        <td>Muito importante</td>
-                    } @if (item.Importancia == 4)
-                    {
-                        <td>Totalmente importante</td>
+                        @if (item.Importancia == 0)
+                        {
+                            <td>Totalmente sem importância</td>
+                        } @if (item.Importancia == 1)
+                        {
+                            <td>Pouca importância</td>
+                        } @if (item.Importancia == 2)
+                        {
+                            <td>Importante</td>
+                        } @if (item.Importancia == 3)
+                        {
+                            <td>Muito importante</td>
+                        } @if (item.Importancia == 4)
+                        {
+                            <td>Totalmente importante</td>
+                        }
+
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.classificacao)
+                        </td>
+                        <td>
+                            <a asp-controller="Items" asp-action="Edit" asp-route-id="@item.IdItem">Editar</a> |
+                            <a asp-controller="Items" asp-action="Delete" asp-route-id="@item.IdItem">Delete</a>
+                        </td>
+
+
+
+
                     }
 
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.classificacao)
-                    </td>
-                    <td>
-                        <a asp-controller="Items" asp-action="Edit" asp-route-id="@item.IdItem">Editar</a> |
-                        <a asp-controller="Items" asp-action="Delete" asp-route-id="@item.IdItem">Delete</a>
-                    </td>
-
-                }
-
-            </tr>
+                </tr>
             }
+
+
+
+        </tbody>
+        <!-- Meter a pontuação geral de cada quadrante-->
+        <tbody>
+            @foreach (var item in Model.oListQuadrante)
+            {
+
+                <!-- Só pode aparecer os itens referentes à tecnica-->
+                <tr>
+
+                    @if (item.TecnicaId == @ViewBag.IdTecnica)
+                    {
+
+                        <td>
+                            Pontuação geral das suas @Html.DisplayFor(modelItem => item.Nome_Quad)
+                        </td>
+                        <td>
+                            <!-- Aparecer a pontuacao geral-->
+                            @if (item.PosicaoQuadrante == 1)
+                            {
+                                @Model.pontuacaoGeralquad1
+                            }
+                            @if (item.PosicaoQuadrante == 2)
+                            {
+                                @Model.pontuacaoGeralquad2
+                            }
+                            @if (item.PosicaoQuadrante == 3)
+                            {
+                                @Model.pontuacaoGeralquad3
+                            }
+                            @if (item.PosicaoQuadrante == 4)
+                            {
+                                @Model.pontuacaoGeralquad4
+                            }
+                        </td>
+
+                    }
+
+
+                </tr>
+            }
+
+
+
         </tbody>
     </table>
+
+
+
+    <!-- Grafico Analise geral dos fatores internos e externos-->
+
+    <h1>Grafico Analise geral dos fatores internos e externos</h1>
+
+    <canvas id="GraficoAnaliseGeral" width="100" height="100"></canvas>
+    <script>
+        const ctx = document.getElementById('GraficoAnaliseGeral').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['@Model.oQuadrante1.Nome_Quad', '@Model.oQuadrante2.Nome_Quad', '@Model.oQuadrante3.Nome_Quad', '@Model.oQuadrante4.Nome_Quad'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [@Model.pontuacaoGeralquad1, @Model.pontuacaoGeralquad2, @Model.pontuacaoGeralquad3, @Model.pontuacaoGeralquad4],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+    <!-- Grafico Nome quadrante X importancias para cada quad-->
+    <!-- Quad1-->
+
+    <h1>@Model.oQuadrante1.Nome_Quad X Importância</h1>
+
+    <canvas id="GraficoQuad1XImportancia" width="100" height="100"></canvas>
+    <script>
+        const ctxGraficoQuad1 = document.getElementById('GraficoQuad1XImportancia').getContext('2d');
+        const myChartGraficoQuad1 = new Chart(ctxGraficoQuad1, {
+            type: 'bar',
+            data: {
+                labels: ['Totalmente sem importancia', 'Pouco Importante', 'Importante', 'Muito Importante', 'Totalmente Importante', ],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [@Model.matrizgraficos[1,0], @Model.matrizgraficos[1,1], @Model.matrizgraficos[1,2], @Model.matrizgraficos[1,3],@Model.matrizgraficos[1,4]],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+    <!-- Quad2-->
+
+    <h1>@Model.oQuadrante2.Nome_Quad X Importância</h1>
+
+    <canvas id="GraficoQuad2XImportancia" width="100" height="100"></canvas>
+    <script>
+        const ctxGraficoQuad2 = document.getElementById('GraficoQuad2XImportancia').getContext('2d');
+        const myChartGraficoQuad2 = new Chart(ctxGraficoQuad2, {
+            type: 'bar',
+            data: {
+                labels: ['Totalmente sem importancia', 'Pouco Importante', 'Importante', 'Muito Importante', 'Totalmente Importante', ],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [@Model.matrizgraficos[2,0], @Model.matrizgraficos[2,1], @Model.matrizgraficos[2,2], @Model.matrizgraficos[2,3],@Model.matrizgraficos[2,4]],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+    <!-- Quad3-->
+
+    <h1>@Model.oQuadrante3.Nome_Quad X Importância</h1>
+
+    <canvas id="GraficoQuad3XImportancia" width="100" height="100"></canvas>
+    <script>
+        const ctxGraficoQuad3 = document.getElementById('GraficoQuad3XImportancia').getContext('2d');
+        const myChartGraficoQuad3 = new Chart(ctxGraficoQuad3, {
+            type: 'bar',
+            data: {
+                labels: ['Totalmente sem importancia', 'Pouco Importante', 'Importante', 'Muito Importante', 'Totalmente Importante', ],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [@Model.matrizgraficos[3,0], @Model.matrizgraficos[3,1], @Model.matrizgraficos[3,2], @Model.matrizgraficos[3,3],@Model.matrizgraficos[3,4]],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+    <!-- Quad2-->
+
+    <h1>@Model.oQuadrante4.Nome_Quad X Importância</h1>
+
+    <canvas id="GraficoQuad4XImportancia" width="100" height="100"></canvas>
+    <script>
+        const ctxGraficoQuad4 = document.getElementById('GraficoQuad4XImportancia').getContext('2d');
+        const myChartGraficoQuad4 = new Chart(ctxGraficoQuad4, {
+            type: 'bar',
+            data: {
+                labels: ['Totalmente sem importancia', 'Pouco Importante', 'Importante', 'Muito Importante', 'Totalmente Importante', ],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [@Model.matrizgraficos[4,0], @Model.matrizgraficos[4,1], @Model.matrizgraficos[4,2], @Model.matrizgraficos[4,3],@Model.matrizgraficos[4,4]],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+
+    <!-- Grafico Radar-->
+
+    <h1>Grafico Radar</h1>
+
+    <canvas id="GraficoRadar" width="100" height="100"></canvas>
+    <script>
+        const ctxRadar = document.getElementById('GraficoRadar').getContext('2d');
+        const myChartRadar = new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: ['@Model.oQuadrante1.Nome_Quad', '@Model.oQuadrante2.Nome_Quad', '@Model.oQuadrante3.Nome_Quad', '@Model.oQuadrante4.Nome_Quad'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [@Model.pontuacaoGeralquad1, @Model.pontuacaoGeralquad2, @Model.pontuacaoGeralquad3, @Model.pontuacaoGeralquad4],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
 }
 else
 {
