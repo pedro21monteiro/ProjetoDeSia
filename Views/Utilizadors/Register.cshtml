@@ -4,40 +4,88 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>Register</h1>
 
-<h4>Utilizador</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Register">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+<head>
+        <link rel="stylesheet" href="~/css/StyleSheet.css" />
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+</head>
+
+<body>
+	<div class="section">
+		<div class="container">
+			<div class="row full-height justify-content-center">
+				<div class="col-12 text-center align-self-center py-5">
+					<div class="section pb-5 pt-5 pt-sm-2 text-center">
+						<h6 class="mb-0 pb-3"><span>Registar</span><span>Log In </span></h6>
+			          	<input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
+			          	<label for="reg-log"></label>
+						<div class="card-3d-wrap mx-auto">
+							<div class="card-3d-wrapper">
+								<div class="card-front">
+									<div class="center-wrap">
+										<div class="section text-center">
+											<h4 class="mb-4 pb-3">Registar</h4>
+											<form asp-action="Register">
+											<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+											<div class="form-group mt-2">
+											
+												<label asp-for="UserName" class="control-label" ></label>
+												  <input asp-for="UserName" class="form-control" placeholder="Your Username"/>
+												  <span asp-validation-for="UserName" class="text-danger" ></span>
+											</div>	
+											<div class="form-group mt-2">
+												<label asp-for="Password" class="control-label"></label>
+												<input asp-for="Password" class="form-control" placeholder="Your Password" />
+												<span asp-validation-for="Password" class="text-danger"></span>
+											</div>
+											<div class="form-group mt-2">
+												<label asp-for="Email" class="control-label"></label>
+												<input asp-for="Email" class="form-control" placeholder="Your Email"/>
+												<span asp-validation-for="Email" class="text-danger"></span>
+											</div>
+											<div class="form-group">
+											 <input type="submit" value="Create" class="btn btn-primary" />
+											 </div>
+                            				<p class="mb-0 mt-4 text-center"><a href="#0" class="link">Forgot your password?</a></p>
+										  </form>
+				      					</div>
+			      					</div>
+			      				</div>
+								<div class="card-back">
+									<div class="center-wrap">
+										<div class="section text-center">
+											<h4 class="mb-4 pb-3">Log In</h4>
+											<form asp-action="LogIn">
+											  <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+											  <div class="form-group">
+											      <label asp-for="UserName" class="control-label"></label>
+											      <input asp-for="UserName" class="form-control" />
+											      <span asp-validation-for="UserName" class="text-danger"></span>
+											  </div>
+											  <div class="form-group">
+											      <label asp-for="Password" class="control-label"></label>
+											      <input asp-for="Password" class="form-control" />
+											      <span asp-validation-for="Password" class="text-danger"></span>
+											  </div>
+											  <div class="form-group">
+											      <input type="submit" value="LogIn" class="btn btn-primary" />
+											  </div>
+											</form>
+				      					</div>
+			      					</div>
+			      				</div>
+			      			</div>
+			      		</div>
+			      	</div>
+		      	</div>
+	      	</div>
+	    </div>
+	</div>
+</body>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+

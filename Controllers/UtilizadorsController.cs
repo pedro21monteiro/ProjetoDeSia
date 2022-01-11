@@ -112,7 +112,7 @@ namespace ProjetoDeSia.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("GerirUtilizadores", "Utilizadors");
             }
             return View(utilizador);
         }
@@ -140,10 +140,14 @@ namespace ProjetoDeSia.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+
+            //o delete não vai apagar o utilizador, apena o vai por na categoria de apagados
             var utilizador = await _context.Utilizador.FindAsync(id);
-            _context.Utilizador.Remove(utilizador);
+            utilizador.Categoria = 3;//o 3 é apagado
+
+            _context.Utilizador.Update(utilizador);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("GerirUtilizadores", "Utilizadors");
         }
 
         private bool UtilizadorExists(int id)
@@ -209,7 +213,7 @@ namespace ProjetoDeSia.Controllers
             if (ModelState.IsValid)
             {
                 Utilizador u = _context.Utilizador.SingleOrDefault(u => u.UserName == UserName && u.Password == Password);
-                if (u == null)
+                if (u == null || u.Categoria == 3)
                 {
                     ModelState.AddModelError("username", "Username ou password está incorreta !!");
                 }
@@ -254,6 +258,28 @@ namespace ProjetoDeSia.Controllers
         {
             return View(await _context.Utilizador.ToListAsync());
            
+        }
+
+        //----------Pesquisa no geririUtilizadores------------------------
+        public async Task<IActionResult> Pesquisa(string searchString)
+        {
+            List<Utilizador> utilizadors = new List<Utilizador>();
+            List<Utilizador> utilizadorsFinal = new List<Utilizador>();
+            utilizadors = await _context.Utilizador.ToListAsync();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                foreach (Utilizador utilizador in utilizadors)
+                {
+                    if (utilizador.UserName.Contains(searchString))
+                    {
+                        utilizadorsFinal.Add(utilizador);
+                     }
+
+                }
+            }
+
+            return View("GerirUtilizadores", utilizadorsFinal);
         }
 
         //// POST: Utilizadors/Create

@@ -29,10 +29,10 @@ namespace ProjetoDeSia.Models
         public int[,] matrizgraficos { get; set; }
 
         //cenas para a pontuacao geral
-        public double pontuacaoGeralquad1{ get; set; }
-        public double pontuacaoGeralquad2{ get; set; }
-        public double pontuacaoGeralquad3 { get; set; }
-        public double pontuacaoGeralquad4 { get; set; }
+        public int pontuacaoGeralquad1 { get; set; }
+        public int pontuacaoGeralquad2 { get; set; }
+        public int pontuacaoGeralquad3 { get; set; }
+        public int pontuacaoGeralquad4 { get; set; }
 
 
 
@@ -101,19 +101,19 @@ namespace ProjetoDeSia.Models
                     //verificar a que quadrante pertence
                     if (quad.PosicaoQuadrante == 1)
                     {
-                        pontuacaoGeralquad1 = pontuacaoGeralquad1 + it.Pontucao;
+                        pontuacaoGeralquad1 = pontuacaoGeralquad1 + Convert.ToInt32(it.Pontucao);
                     }
                     if (quad.PosicaoQuadrante == 2)
                     {
-                        pontuacaoGeralquad2 = pontuacaoGeralquad2 + it.Pontucao;
+                        pontuacaoGeralquad2 = pontuacaoGeralquad2 + Convert.ToInt32(it.Pontucao);
                     }
                     if (quad.PosicaoQuadrante == 3)
                     {
-                        pontuacaoGeralquad3 = pontuacaoGeralquad3 + it.Pontucao;
+                        pontuacaoGeralquad3 = pontuacaoGeralquad3 + Convert.ToInt32(it.Pontucao);
                     }
                     if (quad.PosicaoQuadrante == 4)
                     {
-                        pontuacaoGeralquad4 = pontuacaoGeralquad4 + it.Pontucao;
+                        pontuacaoGeralquad4 = pontuacaoGeralquad4 + Convert.ToInt32(it.Pontucao);
                     }
                 }
             }

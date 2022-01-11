@@ -79,7 +79,7 @@ namespace ProjetoDeSia.Controllers
 
                 //--
                 quadrante1.Tecnica = tecnica;
-                quadrante2.Tecnica = tecnica; 
+                quadrante2.Tecnica = tecnica;
                 quadrante3.Tecnica = tecnica;
                 quadrante4.Tecnica = tecnica;
 
@@ -221,12 +221,12 @@ namespace ProjetoDeSia.Controllers
         }
 
 
-        
-       //---------------------Minhas Funções------------------------------
+
+        //---------------------Minhas Funções------------------------------
 
         public async Task<IActionResult> EntrarTecnica(int? id) //id da tecnica
         {
-    
+
             UsarTecnicaViewModel usarTecnicaViewModel = new UsarTecnicaViewModel();
             Tecnica tecnica = await _context.Tecnica.FirstOrDefaultAsync(m => m.IdTecnica == id);
 
@@ -237,7 +237,7 @@ namespace ProjetoDeSia.Controllers
                 //meter a view vag do id da tecnica que esta aberta
                 ViewBag.IdTecnica = tecnica.IdTecnica;
                 HttpContext.Session.SetInt32("TecnicaId", tecnica.IdTecnica);
-               
+
 
                 //se o id da tecnica for igual ao do utilizador tem permições para aceder a pagina
                 usarTecnicaViewModel.temPermicoes = true;
@@ -257,7 +257,7 @@ namespace ProjetoDeSia.Controllers
 
                 //gerar os valores para gerar os quatro graficos GraficoQuadNomeXimportancia----------------------
                 await usarTecnicaViewModel.gerarGraficoQuadNomeXimportanciaAsync(tecnica.IdTecnica, _context);
-               
+
 
             }
             else
@@ -267,8 +267,8 @@ namespace ProjetoDeSia.Controllers
 
             return View(usarTecnicaViewModel);
 
-        }  
-        
+        }
+
         //---------------------------------------------------------------------
     }
 }

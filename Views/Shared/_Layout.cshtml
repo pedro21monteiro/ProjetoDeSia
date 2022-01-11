@@ -8,68 +8,67 @@
     <title>@ViewData["Title"] - ProjetoDeSia</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
+
+
 <body>
 
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ProjetoDeSia</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+                <a class="logo" asp-area="" asp-controller="Home" asp-action="Index">quadrant</a>
             </div>
-            @if (Context.Session.GetString("Utilizador") == null)
+            <div class="loginregister">
+                @if (Context.Session.GetString("Utilizador") == null)
             {
+                @*<div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">*@
+
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadors" asp-action="LogIn">LogIn</a>
+                            <a class="nav-link" asp-area="" asp-controller="Utilizadors" asp-action="LogIn">LogIn</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadors" asp-action="Register">Register</a>
+                            <a class="nav-link" asp-area="" asp-controller="Utilizadors" asp-action="Register">Register</a>
                         </li>
                     </ul>
                 </div>
             }
+            </div>
+
+            <div class="loginON">
             @if(Context.Session.GetString("Utilizador") != null)
             {
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 <ul class="navbar-nav flex-grow-1">
-
-                    <li class="nav-item">
-                        <a>Bem vindo @Context.Session.GetString("Utilizador")!!</a>
-                    </li>
                     <!-- Se for admin vai ter opções extras, os admins tem categoria 0 ou -1-->
                     @if (Context.Session.GetInt32("Categoria") <= 0)
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadors" asp-action="GerirUtilizadores">Gerir Utilizadores</a>
+                            <a class="nav-link" asp-area="" asp-controller="Utilizadors" asp-action="GerirUtilizadores">Gerir Utilizadores</a>
                         </li>
                     }
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadors" asp-action="Perfil" asp-route-id="@Convert.ToInt32(Context.Session.GetString("UtilizadorId"))">Perfil</a>
+                        <a href="#">@Context.Session.GetString("Utilizador")</a>
+                        <ul class="dropdown">
+                            <li><a asp-controller="Utilizadors" asp-action="EditarNome" asp-route-id="@Convert.ToInt32(Context.Session.GetString("UtilizadorId"))">Editar Nome</a></li>
+                            <li><a asp-controller="Utilizadors" asp-action="EditarPassword" asp-route-id="@Convert.ToInt32(Context.Session.GetString("UtilizadorId"))">Editar Password</a></li>
+                            <li><a asp-controller="Utilizadors" asp-action="EditarEmail" asp-route-id="@Convert.ToInt32(Context.Session.GetString("UtilizadorId"))">Editar Email</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Tecnicas" asp-action="Index">Tecnicas</a>
+
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Tecnicas" asp-action="Index">Minhas Tecnicas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadors" asp-action="Logout">Logout</a>
+                        <a class="nav-link" asp-area="" asp-controller="Utilizadors" asp-action="Logout">Logout</a>
                     </li>
                 </ul>
             </div>
             }
+            </div>
 
         </nav>
     </header>
@@ -79,14 +78,11 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - ProjetoDeSia - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+

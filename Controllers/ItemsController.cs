@@ -82,23 +82,23 @@ namespace ProjetoDeSia.Controllers
                 //Pontuação que é 0-1-2-3-4
                 if(item.Importancia == 0)
                 {
-                    item.Pontucao = 0;
+                    item.Pontucao = 1;
                 }
                 if (item.Importancia == 1)
                 {
-                    item.Pontucao = 2.5;
+                    item.Pontucao = 2;
                 }
                 if (item.Importancia == 2)
                 {
-                    item.Pontucao = 5;
+                    item.Pontucao = 3;
                 }
                 if (item.Importancia == 3)
                 {
-                    item.Pontucao = 7.5;
+                    item.Pontucao = 4;
                 }
                 if (item.Importancia == 4)
                 {
-                    item.Pontucao = 10;
+                    item.Pontucao = 5;
                 }
                 //Classificaçao - nome do quadrante que esta associado
                 Quadrante q = _context.Quadrante.SingleOrDefault(q => q.IdQuadrante == item.QuadId);
@@ -169,23 +169,23 @@ namespace ProjetoDeSia.Controllers
                     //Pontuação que é 0-1-2-3-4
                     if (item.Importancia == 0)
                     {
-                        item.Pontucao = 0;
+                        item.Pontucao = 1;
                     }
                     if (item.Importancia == 1)
                     {
-                        item.Pontucao = 2.5;
+                        item.Pontucao = 2;
                     }
                     if (item.Importancia == 2)
                     {
-                        item.Pontucao = 5;
+                        item.Pontucao = 3;
                     }
                     if (item.Importancia == 3)
                     {
-                        item.Pontucao = 7.5;
+                        item.Pontucao = 4;
                     }
                     if (item.Importancia == 4)
                     {
-                        item.Pontucao = 10;
+                        item.Pontucao = 5;
                     }
                     //Classificaçao - nome do quadrante que esta associado
                     Quadrante q = _context.Quadrante.SingleOrDefault(q => q.IdQuadrante == item.QuadId);
@@ -245,7 +245,7 @@ namespace ProjetoDeSia.Controllers
             var item = await _context.Item.FindAsync(id);
             _context.Item.Remove(item);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("EntrarTecnica", "Tecnicas", new { @id = HttpContext.Session.GetInt32("TecnicaId") });
         }
 
         private bool ItemExists(int id)

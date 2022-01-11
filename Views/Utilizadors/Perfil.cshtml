@@ -9,22 +9,7 @@
 
 @if (Model.IdUtilizador.ToString() == Context.Session.GetString("UtilizadorId"))
 {
-<tr>
-    <td>
-        <a asp-controller="Utilizadors" asp-action="EditarNome" asp-route-id="@Model.IdUtilizador">Editar Nome</a>
-        <br>
-    </td>
-    <td>
-        <a asp-controller="Utilizadors" asp-action="EditarPassword" asp-route-id="@Model.IdUtilizador">Editar Password</a>
-        <br>
-    </td>
-    <td>
-        <a asp-controller="Utilizadors" asp-action="EditarEmail" asp-route-id="@Model.IdUtilizador">Editar Email</a>
-        <br>
-    </td>
 
-
-</tr>
 }
 else
 {
